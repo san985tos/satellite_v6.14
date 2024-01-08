@@ -8,6 +8,7 @@ The content of this repository aims to be a manual for the familiarization of Re
 - [Vagrantfile file and Ansible playbook to deploy a Red Hat Satellite environment](Satellite_env/README.md)
 - [Validation of Satellite, like a quick Health check](docs/VALIDATE_SATELLITE.md)
 - [Hammer cli examples for reference](docs/HAMMER_CLI.md)
+- [Register a host into Satellite](docs/REGISTRATION.md)
 
 ## Use cases:
 
