@@ -1,3 +1,13 @@
+## Check Installed user and passeord
+
+```
+# cat .hammer/cli.modules.d/foreman.yml
+:foreman:
+  # Credentials. You'll be asked for the interactively if you leave them blank here
+  :username: 'admin'
+  :password: 'r3dh4t1!'
+```
+
 ## Diagnose Satellite Services 
 
 ```
