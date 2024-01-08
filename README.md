@@ -4,8 +4,7 @@ The content of this repository aims to be a manual for the familiarization of Re
 
 ## Contents
 
-- Vagrantfile foe a RHEL machine.
-- Ansible playbook to install Red Hat Satellite.
+- Vagrantfile file and Ansible playbook to deploy a Red Hat Satellite environment.
 - Use cases
 
 
