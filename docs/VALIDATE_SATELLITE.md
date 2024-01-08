@@ -1,4 +1,4 @@
-## Check Installed user and passeord
+## Check Installed user and password
 
 ```
 # cat .hammer/cli.modules.d/foreman.yml
