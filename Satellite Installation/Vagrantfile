@@ -1,0 +1,42 @@
+IMAGE_NAME = "generic/rhel8"
+
+Vagrant.configure("2") do |config|
+    config.ssh.insert_key = false
+    config.ssh.forward_x11 = true
+
+    config.vm.provider "virtualbox" do |v|
+        v.memory = 20480
+        v.cpus = 4
+    end
+      
+    config.vm.define "satellite_6.14" do |rhelSatellite|
+        rhelSatellite.vm.box = IMAGE_NAME
+        rhelSatellite.vm.network "private_network", ip: "192.168.56.10"
+        rhelSatellite.vm.hostname = "satellite.mylab.com"
+        rhelSatellite.vm.provision "file", source: "./install-Satellite_6.14.yml", destination: "$HOME/"
+        rhelSatellite.vm.provision "shell", inline: <<-SHELL
+          sudo systemctl restart sshd
+          # Subscribe instance
+          sudo subscription-manager register --auto-attach --username='lvazquez-r3dh4t' --password='PASSWORD_HERE'
+          # Enable X11
+          sudo dnf install -y xorg-x11-xauth xorg-x11-fonts-\* xorg-x11-utils dbus-x11
+          sudo dnf install -y xclock 
+          # Install Chromium browser
+          sudo dnf install -y chromium
+          echo 'alias chrome="chromium-browser"' >> .bashrc
+          # Enable ssh password authentication
+          sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+          sudo sed -i 's/#PermitRootLogin yes/PermitRootLogin yes/g' /etc/ssh/sshd_config
+          # Install Ansible Core
+          sudo yum install -y ansible
+          # Install Red Hat satellite
+          sudo ansible-playbook install-Satellite_6.14.yml
+          # Optionaly, register with Insights
+          # sudo insights-client --register
+          #  sudo yum localinstall http://satellite.opendemoday.com/pub/katello-ca-consumer-latest.noarch.rpm
+          #  sudo subscription-manager register --org redhat --username admin --password r3dh4t1!
+        SHELL
+
+    end
+
+end

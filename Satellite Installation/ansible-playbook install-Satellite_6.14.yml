@@ -1,0 +1,63 @@
+---
+- hosts: localhost
+  become: true
+
+  tasks:
+    - name: timedatectl set timezone America/Mexico_City
+      community.general.timezone:
+        name: America/Mexico_City
+
+    - name: dnf install chronyd and enable it 
+      ansible.builtin.package:
+        name: chrony
+        state: latest
+    
+    - name: systemctl enable --now  chronyd
+      ansible.builtin.systemd:
+        name: chronyd
+        state: started
+        enabled: true
+
+    - name: systemd stop and disable firewalld
+      ansible.builtin.systemd:
+        name: firewalld
+        state: stopped
+        enabled: false
+
+    - name: Subscribe Satellite pool ID 
+      shell: |
+        subscription-manager attach --pool=POOL_ID
+    
+    - name: Disable repos
+      shell: |
+        subscription-manager repos --disable "*"
+
+    - name: Enable needed repos   
+      shell: |
+        subscription-manager repos --enable=rhel-8-for-x86_64-baseos-rpms \
+          --enable=rhel-8-for-x86_64-appstream-rpms \
+          --enable=satellite-6.14-for-rhel-8-x86_64-rpms \
+          --enable=satellite-maintenance-6.14-for-rhel-8-x86_64-rpms
+
+    - name: Install Satellite
+      shell: |
+        dnf module enable satellite:el8 -y 
+        dnf update -y
+        dnf install sos -y
+        dnf install satellite -y
+        echo "::1         localhost localhost.localdomain localhost6 localhost6.localdomain6" > /etc/hosts
+        echo "127.0.0.1 satellite.mylab.com satellite localhost" >> /etc/hosts
+
+    - name: Setup Satellite
+      shell: |
+        satellite-installer --scenario satellite \
+          --foreman-initial-organization “Default” \
+          --foreman-initial-location “Default” \
+          --foreman-initial-admin-username admin \
+          --foreman-initial-admin-password r3dh4t1!
+
+
+    - name: Setup Insights inside Satellite
+      shell: |
+        satellite-maintain packages install insights-client
+        satellite-installer --register-with-insights
