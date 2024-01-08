@@ -115,8 +115,6 @@ Option details:
 ```
 
 
-
 ### REFERENCES
-For more information, see the Hammer CLI Guide at https://access.redhat.com/documentation/en-us/red_hat_satellite/6.11/html-single/hammer_cli_guide/index
+For more information, see the Hammer CLI Guide at https://access.redhat.com/documentation/en-us/red_hat_satellite/6.14/html-single/hammer_cli_guide/index
 
-For more information, see the Hammer Cheat Sheet at https://access.redhat.com/documentation/en-us/red_hat_satellite/6.11/html-single/hammer_cheat_sheet/index
