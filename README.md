@@ -5,7 +5,10 @@ The content of this repository aims to be a manual for the familiarization of Re
 ## Contents
 
 - Vagrantfile file and Ansible playbook to deploy a Red Hat Satellite environment. More information here: https://www.vagrantup.com/.
-- Use cases
+- Use cases:
+    - 
+    - 
+    - 
 
 
  ![alt_text](pics/test.png)
